@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Inventory _inventory; //underscore denotes global variable, accessible in whole file
+Inventory _inventory; //underscore denotes global variable
 
 void DisplayMainMenu()
 {
@@ -131,12 +131,7 @@ int main()
             cout << "Invalid Selection. Try again." << endl;
             break;
         }
-
     }
-
     return 0;
-
-
-
 }
 
