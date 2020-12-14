@@ -15,6 +15,7 @@ void DisplayMainMenu()
     cout << "3. Check out book" << endl;
     cout << "4. Check in book" << endl;
     cout << "5. Remove book from library" << endl;
+    cout << "6. List all checked books" << endl;
     cout << "0. Exit" << endl;
 }
 
@@ -28,7 +29,7 @@ void AddNewBook()
     string author;
     getline(cin, author);
 
-    int id = _inventory.Books.size() + 1; //size of vector + 1, so first book will have id of 1
+    int id = _inventory.GetNextBookId();
 
     Book newBook(id, title, author); //create new Book object
 
@@ -38,9 +39,9 @@ void AddNewBook()
 void ListAllBooks()
 {
     cout << "\nID\tTitle\tAuthor" << endl;
-    for (int i = 0; i < _inventory.Books.size(); i++)
+    for (int i = 0; i < _inventory.NumberOfBooks(); i++)
     {
-        cout << _inventory.Books[i].Id << "\t" << _inventory.Books[i].Title << "\t" << _inventory.Books[i].Author << endl;
+        cout << _inventory.GetBookByIndex(i)->Id << "\t" << _inventory.GetBookByIndex(i)->Title << "\t" << _inventory.GetBookByIndex(i)->Author << endl;
     }
     cout << endl;
 }
@@ -65,7 +66,7 @@ void CheckInOrOutBook(bool checkIn)
 
     if (foundBookIndex >= 0)
     {
-        Book* foundBook = &_inventory.Books[foundBookIndex]; //use pointer so it is not a copy
+        Book* foundBook = _inventory.GetBookByIndex(foundBookIndex); //use pointer so it is not a copy
 
         //if CheckedOut == false, we are checked in
         //if CheckedOut == true, we are checkout out
@@ -95,6 +96,19 @@ void RemoveBook()
     getline(cin, title); //getline gets multiple words, cin gets one word
 
     _inventory.RemoveBook(title);
+}
+
+void DisplayCheckedOutbooks()
+{
+    cout << "\nID\tTitle\tAuthor" << endl;
+    for (int i = 0; i < _inventory.NumberOfBooks(); i++)
+    {
+        if (_inventory.GetBookByIndex(i)->CheckedOut)
+        {
+            cout << _inventory.GetBookByIndex(i)->Id << "\t" << _inventory.GetBookByIndex(i)->Title << "\t" << _inventory.GetBookByIndex(i)->Author << endl;
+        }
+    }
+    cout << endl;
 }
 
 int main()
@@ -127,6 +141,9 @@ int main()
         case 5:
             RemoveBook();
             break;
+        case 6:
+            DisplayCheckedOutbooks();
+            break;
         default:
             cout << "Invalid Selection. Try again." << endl;
             break;
@@ -134,4 +151,3 @@ int main()
     }
     return 0;
 }
-
